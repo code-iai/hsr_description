@@ -127,6 +127,14 @@ POSSIBILITY OF SUCH DAMAGE.
 
         <xacro:hsrb_hand_gazebo prefix="${prefix}"/>
         <xacro:hsrb_hand_transmission prefix="${prefix}"/>
+
+        <joint name="${prefix}_gripper_tool_frame_joint" type="fixed">
+            <origin xyz="0.0 0.0 0.07" rpy="0.0 0.0 0.0" />
+            <parent link="${prefix}_palm_link" />
+            <child link="${prefix}_gripper_tool_frame" />
+        </joint>
+
+        <link name="${prefix}_gripper_tool_frame"/>
     </xacro:macro>
 
     <!-- gripper finger proximal base -->
