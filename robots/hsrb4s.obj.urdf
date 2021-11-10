@@ -101,7 +101,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </inertial>
   </link>
   <joint name="base_r_drive_wheel_joint" type="continuous">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.11 -0.133 0.04"/>
     <axis xyz="0.0 1.0 0.0"/>
     <limit effort="11.067" velocity="20.8"/>
     <parent link="base_roll_link"/>
@@ -129,7 +129,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </inertial>
   </link>
   <joint name="base_l_drive_wheel_joint" type="continuous">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.11 0.133 0.04"/>
     <axis xyz="0.0 1.0 0.0"/>
     <limit effort="11.067" velocity="20.8"/>
     <parent link="base_roll_link"/>
@@ -157,7 +157,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </inertial>
   </link>
   <joint name="base_r_passive_wheel_x_frame_joint" type="continuous">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.1495                 -0.055                 0.03"/>
     <axis xyz="1.0 0.0 0.0"/>
     <limit effort="1.0" velocity="3.0"/>
     <parent link="base_roll_link"/>
@@ -209,7 +209,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </inertial>
   </link>
   <joint name="base_l_passive_wheel_x_frame_joint" type="continuous">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.1495                 0.055                 0.03"/>
     <axis xyz="1.0 0.0 0.0"/>
     <limit effort="1.0" velocity="3.0"/>
     <parent link="base_roll_link"/>
@@ -261,7 +261,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </inertial>
   </link>
   <joint name="base_range_sensor_joint" type="fixed">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.1675 0.0 0.1844"/>
     <parent link="base_link"/>
     <child link="base_range_sensor_link"/>
   </joint>
@@ -304,7 +304,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </sensor>
   </gazebo>
   <joint name="base_imu_frame_joint" type="fixed">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="3.14159265359 0.0 0.0" xyz="0.0005 0.1296 0.181"/>
     <parent link="base_link"/>
     <child link="base_imu_frame"/>
   </joint>
@@ -342,19 +342,104 @@ POSSIBILITY OF SUCH DAMAGE.
       <robotNamespace>hsrb</robotNamespace>
     </plugin>
   </gazebo>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="base_link"/>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="base_roll_link"/>
-  <xacro:gazebo_link_rubber name="base_r_drive_wheel_link"/>
-  <xacro:gazebo_link_rubber name="base_l_drive_wheel_link"/>
-  <xacro:gazebo_link_caster name="base_r_passive_wheel_z_link"/>
-  <xacro:gazebo_link_caster name="base_l_passive_wheel_z_link"/>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="base_range_sensor_link"/>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="base_imu_frame"/>
-  <xacro:hsrb_velocity_joint_transmission joint="base_r_drive_wheel_joint" reduction="1"/>
-  <xacro:hsrb_velocity_joint_transmission joint="base_l_drive_wheel_joint" reduction="1"/>
-  <xacro:hsrb_position_joint_transmission joint="base_roll_joint" reduction="1"/>
+  <gazebo reference="base_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="base_roll_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="base_r_drive_wheel_link">
+    <selfCollide>false</selfCollide>
+    <gravity>true</gravity>
+    <turnGravityOff>false</turnGravityOff>
+    <kp>1000000.0</kp>
+    <kd>10.0</kd>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <fdir1>1 0 0</fdir1>
+    <maxVel>1.0</maxVel>
+    <minDepth>0.00</minDepth>
+    <material value="Gazebo/FlatBlack"/>
+  </gazebo>
+  <gazebo reference="base_l_drive_wheel_link">
+    <selfCollide>false</selfCollide>
+    <gravity>true</gravity>
+    <turnGravityOff>false</turnGravityOff>
+    <kp>1000000.0</kp>
+    <kd>10.0</kd>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <fdir1>1 0 0</fdir1>
+    <maxVel>1.0</maxVel>
+    <minDepth>0.00</minDepth>
+    <material value="Gazebo/FlatBlack"/>
+  </gazebo>
+  <gazebo reference="base_r_passive_wheel_z_link">
+    <selfCollide>false</selfCollide>
+    <gravity>true</gravity>
+    <mu1>0.1</mu1>
+    <mu2>0.1</mu2>
+    <maxVel>1.0</maxVel>
+    <material value="Gazebo/FlatBlack"/>
+  </gazebo>
+  <gazebo reference="base_l_passive_wheel_z_link">
+    <selfCollide>false</selfCollide>
+    <gravity>true</gravity>
+    <mu1>0.1</mu1>
+    <mu2>0.1</mu2>
+    <maxVel>1.0</maxVel>
+    <material value="Gazebo/FlatBlack"/>
+  </gazebo>
+  <gazebo reference="base_range_sensor_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="base_imu_frame">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <transmission name="base_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="base_r_drive_wheel_joint">
+      <hardwareInterface>VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="base_r_drive_wheel_joint_actuator">
+      <hardwareInterface>VelocityJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="base_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="base_l_drive_wheel_joint">
+      <hardwareInterface>VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="base_l_drive_wheel_joint_actuator">
+      <hardwareInterface>VelocityJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="base_roll_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="base_roll_joint">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="base_roll_joint_actuator">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="torso_lift_joint" type="prismatic">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.752"/>
     <!-- <origin xyz="0.0 0.0 0.752" rpy="0.0 0.0 0.0" /> -->
     <axis xyz="0.0 0.0 1.0"/>
     <limit effort="100.0" lower="0.0" upper="0.345" velocity="0.1"/>
@@ -380,12 +465,18 @@ POSSIBILITY OF SUCH DAMAGE.
       </geometry>
     </collision>
   </link>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="torso_lift_link"/>
-  <xacro:gazebo_joint_mimic name="torso_lift_joint"/>
+  <gazebo reference="torso_lift_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="torso_lift_joint">
+    </gazebo>
   <gazebo>
         </gazebo>
   <joint name="head_pan_joint" type="revolute">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
     <axis xyz="0.0 0.0 1.0"/>
     <limit effort="100.0" lower="-3.84" upper="1.75" velocity="1.0"/>
     <parent link="torso_lift_link"/>
@@ -450,7 +541,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </collision>
   </link>
   <joint name="head_l_stereo_camera_joint" type="fixed">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="-1.570796326795 0.0 -1.570796326795" xyz="0.02 0.07 0.061"/>
     <parent link="head_tilt_link"/>
     <child link="head_l_stereo_camera_link"/>
   </joint>
@@ -506,7 +597,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </sensor>
   </gazebo>
   <joint name="head_r_stereo_camera_joint" type="fixed">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="-1.570796326795 0.0 -1.570796326795" xyz="0.02 -0.07 0.061"/>
     <parent link="head_tilt_link"/>
     <child link="head_r_stereo_camera_link"/>
   </joint>
@@ -562,7 +653,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </sensor>
   </gazebo>
   <joint name="head_center_camera_frame_joint" type="fixed">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="-1.570796326795 0.0 -1.570796326795" xyz="0.0195 0.0 0.061"/>
     <parent link="head_tilt_link"/>
     <child link="head_center_camera_frame"/>
   </joint>
@@ -611,7 +702,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </sensor>
   </gazebo>
   <joint name="head_rgbd_sensor_joint" type="fixed">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="-1.570796326795 0.0 -1.570796326795" xyz="-0.079796 0.022 0.215172"/>
     <parent link="head_tilt_link"/>
     <child link="head_rgbd_sensor_link"/>
   </joint>
@@ -683,18 +774,68 @@ POSSIBILITY OF SUCH DAMAGE.
       </plugin>
     </sensor>
   </gazebo>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="head_pan_link"/>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="head_tilt_link"/>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="head_l_stereo_camera_link"/>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="head_r_stereo_camera_link"/>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="false" name="head_center_camera_frame"/>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="head_rgbd_sensor_link"/>
-  <xacro:gazebo_joint name="head_pan_joint"/>
-  <xacro:gazebo_joint name="head_tilt_joint"/>
-  <xacro:hsrb_position_joint_transmission joint="head_pan_joint" reduction="1"/>
-  <xacro:hsrb_position_joint_transmission joint="head_tilt_joint" reduction="1"/>
+  <gazebo reference="head_pan_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="head_tilt_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="head_l_stereo_camera_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="head_r_stereo_camera_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="head_center_camera_frame">
+    <selfCollide>False</selfCollide>
+    <gravity>False</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="head_rgbd_sensor_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="head_pan_joint">
+  </gazebo>
+  <gazebo reference="head_tilt_joint">
+  </gazebo>
+  <transmission name="head_pan_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="head_pan_joint">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="head_pan_joint_actuator">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="head_tilt_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="head_tilt_joint">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="head_tilt_joint_actuator">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="arm_lift_joint" type="prismatic">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.340"/>
     <axis xyz="0.0 0.0 1.0"/>
     <limit effort="100.0" lower="0.0" upper="0.69" velocity="0.2"/>
     <parent link="base_link"/>
@@ -768,15 +909,60 @@ POSSIBILITY OF SUCH DAMAGE.
       </geometry>
     </collision>
   </link>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="arm_lift_link"/>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="arm_flex_link"/>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="arm_roll_link"/>
-  <xacro:gazebo_joint name="arm_lift_joint"/>
-  <xacro:gazebo_joint name="arm_flex_joint"/>
-  <xacro:gazebo_joint name="arm_roll_joint"/>
-  <xacro:hsrb_position_joint_transmission joint="arm_lift_joint" reduction="1"/>
-  <xacro:hsrb_position_joint_transmission joint="arm_flex_joint" reduction="1"/>
-  <xacro:hsrb_position_joint_transmission joint="arm_roll_joint" reduction="1"/>
+  <gazebo reference="arm_lift_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="arm_flex_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="arm_roll_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="arm_lift_joint">
+  </gazebo>
+  <gazebo reference="arm_flex_joint">
+  </gazebo>
+  <gazebo reference="arm_roll_joint">
+  </gazebo>
+  <transmission name="arm_lift_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="arm_lift_joint">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_lift_joint_actuator">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="arm_flex_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="arm_flex_joint">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_flex_joint_actuator">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="arm_roll_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="arm_roll_joint">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_roll_joint_actuator">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="wrist_flex_joint" type="revolute">
     <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
     <axis xyz="0.0 -1.0 0.0"/>
@@ -837,7 +1023,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </collision>
   </link>
   <joint name="wrist_ft_sensor_frame_joint" type="fixed">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="3.14159265359 0.0 0.0" xyz="0.0 0.0 0.0735"/>
     <parent link="wrist_roll_link"/>
     <child link="wrist_ft_sensor_frame"/>
   </joint>
@@ -854,15 +1040,50 @@ POSSIBILITY OF SUCH DAMAGE.
       <robotNamespace>hsrb</robotNamespace>
     </plugin>
   </gazebo>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="wrist_flex_link"/>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="wrist_roll_link"/>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="wrist_ft_sensor_frame"/>
-  <xacro:gazebo_joint name="wrist_flex_joint"/>
-  <xacro:gazebo_joint name="wrist_roll_joint"/>
-  <xacro:hsrb_position_joint_transmission joint="wrist_flex_joint" reduction="1"/>
-  <xacro:hsrb_position_joint_transmission joint="wrist_roll_joint" reduction="1"/>
+  <gazebo reference="wrist_flex_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="wrist_roll_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="wrist_ft_sensor_frame">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="wrist_flex_joint">
+  </gazebo>
+  <gazebo reference="wrist_roll_joint">
+  </gazebo>
+  <transmission name="wrist_flex_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wrist_flex_joint">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wrist_flex_joint_actuator">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="wrist_roll_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="wrist_roll_joint">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="wrist_roll_joint_actuator">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="hand_palm_joint" type="fixed">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="0.0 0.0 3.14159265359" xyz="0.012 0.0 0.1405"/>
     <parent link="wrist_roll_link"/>
     <child link="hand_palm_link"/>
   </joint>
@@ -897,8 +1118,8 @@ POSSIBILITY OF SUCH DAMAGE.
     </inertial>
   </link>
   <joint name="hand_l_proximal_joint" type="revolute">
-    <xacro:insert_block name="origin"/>
-    <xacro:insert_block name="axis"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.01675 -0.0245 -0.0175"/>
+    <axis xyz="1.0 0.0 0.0"/>
     <limit effort="100.0" lower="-0.798" upper="1.24" velocity="1.0"/>
     <parent link="hand_palm_link"/>
     <child link="hand_l_proximal_link"/>
@@ -912,7 +1133,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </inertial>
   </link>
   <joint name="hand_l_spring_proximal_joint" type="revolute">
-    <xacro:insert_block name="axis"/>
+    <axis xyz="1.0 0.0 0.0"/>
     <limit effort="100.0" lower="0.0" upper="0.698" velocity="1.0"/>
     <parent link="hand_l_proximal_link"/>
     <child link="hand_l_spring_proximal_link"/>
@@ -937,8 +1158,8 @@ POSSIBILITY OF SUCH DAMAGE.
     </collision>
   </link>
   <joint name="hand_l_mimic_distal_joint" type="revolute">
-    <xacro:insert_block name="origin"/>
-    <xacro:insert_block name="axis"/>
+    <origin xyz="0.0 0.0 0.07"/>
+    <axis xyz="1.0 0.0 0.0"/>
     <limit effort="100.0" lower="-0.698" upper="-0.0" velocity="1.0"/>
     <parent link="hand_l_spring_proximal_link"/>
     <child link="hand_l_mimic_distal_link"/>
@@ -952,7 +1173,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </inertial>
   </link>
   <joint name="hand_l_distal_joint" type="revolute">
-    <xacro:insert_block name="axis"/>
+    <axis xyz="1.0 0.0 0.0"/>
     <limit effort="100.0" lower="-1.24" upper="0.798" velocity="1.0"/>
     <parent link="hand_l_mimic_distal_link"/>
     <child link="hand_l_distal_link"/>
@@ -1007,8 +1228,8 @@ POSSIBILITY OF SUCH DAMAGE.
     </visual>
   </link>
   <joint name="hand_r_proximal_joint" type="revolute">
-    <xacro:insert_block name="origin"/>
-    <xacro:insert_block name="axis"/>
+    <origin rpy="0.0 0.0 0.0" xyz="-0.01675 0.0245 -0.0175"/>
+    <axis xyz="-1.0 0.0 0.0"/>
     <limit effort="100.0" lower="-0.798" upper="1.24" velocity="1.0"/>
     <parent link="hand_palm_link"/>
     <child link="hand_r_proximal_link"/>
@@ -1022,7 +1243,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </inertial>
   </link>
   <joint name="hand_r_spring_proximal_joint" type="revolute">
-    <xacro:insert_block name="axis"/>
+    <axis xyz="-1.0 0.0 0.0"/>
     <limit effort="100.0" lower="0.0" upper="0.698" velocity="1.0"/>
     <parent link="hand_r_proximal_link"/>
     <child link="hand_r_spring_proximal_link"/>
@@ -1047,8 +1268,8 @@ POSSIBILITY OF SUCH DAMAGE.
     </collision>
   </link>
   <joint name="hand_r_mimic_distal_joint" type="revolute">
-    <xacro:insert_block name="origin"/>
-    <xacro:insert_block name="axis"/>
+    <origin xyz="0.0 0.0 0.07"/>
+    <axis xyz="-1.0 0.0 0.0"/>
     <limit effort="100.0" lower="-0.698" upper="-0.0" velocity="1.0"/>
     <parent link="hand_r_spring_proximal_link"/>
     <child link="hand_r_mimic_distal_link"/>
@@ -1062,7 +1283,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </inertial>
   </link>
   <joint name="hand_r_distal_joint" type="revolute">
-    <xacro:insert_block name="axis"/>
+    <axis xyz="-1.0 0.0 0.0"/>
     <limit effort="100.0" lower="-1.24" upper="0.798" velocity="1.0"/>
     <parent link="hand_r_mimic_distal_link"/>
     <child link="hand_r_distal_link"/>
@@ -1099,7 +1320,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </inertial>
   </link>
   <joint name="hand_camera_frame_joint" type="fixed">
-    <xacro:insert_block name="origin"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.039 0.0 -0.0045"/>
     <parent link="hand_palm_link"/>
     <child link="hand_camera_frame"/>
   </joint>
@@ -1147,34 +1368,136 @@ POSSIBILITY OF SUCH DAMAGE.
       </plugin>
     </sensor>
   </gazebo>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="true" name="hand_palm_link"/>
-  <xacro:gazebo_link collide="false" friction="0.9" gravity="false" name="hand_camera_frame"/>
-  <xacro:gazebo_link collide="false" friction="1.0" gravity="true" name="hand_l_proximal_link"/>
-  <xacro:gazebo_link collide="false" friction="1.0" gravity="true" name="hand_l_spring_proximal_link"/>
-  <xacro:gazebo_link collide="false" friction="1.0" gravity="true" name="hand_l_mimic_distal_link"/>
-  <xacro:gazebo_link collide="false" friction="1.0" gravity="true" name="hand_l_distal_link"/>
-  <xacro:gazebo_link collide="false" friction="1.0" gravity="false" name="hand_l_finger_tip_frame"/>
-  <xacro:gazebo_link collide="false" friction="1.0" gravity="false" name="hand_l_finger_vacuum_frame"/>
-  <xacro:gazebo_link collide="false" friction="1.0" gravity="true" name="hand_r_proximal_link"/>
-  <xacro:gazebo_link collide="false" friction="1.0" gravity="true" name="hand_r_spring_proximal_link"/>
-  <xacro:gazebo_link collide="false" friction="1.0" gravity="true" name="hand_r_mimic_distal_link"/>
-  <xacro:gazebo_link collide="false" friction="1.0" gravity="false" name="hand_r_distal_link"/>
-  <xacro:gazebo_link collide="false" friction="1.0" gravity="false" name="hand_r_finger_tip_frame"/>
-  <xacro:gazebo_joint name="hand_palm_joint"/>
-  <xacro:gazebo_joint name="hand_motor_joint"/>
-  <xacro:gazebo_joint name="hand_l_proximal_joint"/>
-  <xacro:gazebo_joint name="hand_l_spring_proximal_joint"/>
-  <xacro:gazebo_joint name="hand_l_mimic_distal_joint"/>
-  <xacro:gazebo_joint name="hand_l_distal_joint"/>
-  <xacro:gazebo_joint name="hand_r_proximal_joint"/>
-  <xacro:gazebo_joint name="hand_r_spring_proximal_joint"/>
-  <xacro:gazebo_joint name="hand_r_mimic_distal_joint"/>
-  <xacro:gazebo_joint name="hand_r_distal_joint"/>
+  <gazebo reference="hand_palm_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="hand_camera_frame">
+    <selfCollide>False</selfCollide>
+    <gravity>False</gravity>
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+  </gazebo>
+  <gazebo reference="hand_l_proximal_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+  <gazebo reference="hand_l_spring_proximal_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+  <gazebo reference="hand_l_mimic_distal_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+  <gazebo reference="hand_l_distal_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+  <gazebo reference="hand_l_finger_tip_frame">
+    <selfCollide>False</selfCollide>
+    <gravity>False</gravity>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+  <gazebo reference="hand_l_finger_vacuum_frame">
+    <selfCollide>False</selfCollide>
+    <gravity>False</gravity>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+  <gazebo reference="hand_r_proximal_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+  <gazebo reference="hand_r_spring_proximal_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+  <gazebo reference="hand_r_mimic_distal_link">
+    <selfCollide>False</selfCollide>
+    <gravity>True</gravity>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+  <gazebo reference="hand_r_distal_link">
+    <selfCollide>False</selfCollide>
+    <gravity>False</gravity>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+  <gazebo reference="hand_r_finger_tip_frame">
+    <selfCollide>False</selfCollide>
+    <gravity>False</gravity>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+  <gazebo reference="hand_palm_joint">
+  </gazebo>
+  <gazebo reference="hand_motor_joint">
+  </gazebo>
+  <gazebo reference="hand_l_proximal_joint">
+  </gazebo>
+  <gazebo reference="hand_l_spring_proximal_joint">
+  </gazebo>
+  <gazebo reference="hand_l_mimic_distal_joint">
+  </gazebo>
+  <gazebo reference="hand_l_distal_joint">
+  </gazebo>
+  <gazebo reference="hand_r_proximal_joint">
+  </gazebo>
+  <gazebo reference="hand_r_spring_proximal_joint">
+  </gazebo>
+  <gazebo reference="hand_r_mimic_distal_joint">
+  </gazebo>
+  <gazebo reference="hand_r_distal_joint">
+  </gazebo>
   <gazebo>
         </gazebo>
-  <xacro:hsrb_effort_joint_transmission joint="hand_motor_joint" reduction="1"/>
-  <xacro:hsrb_effort_joint_transmission joint="hand_l_spring_proximal_joint" reduction="1"/>
-  <xacro:hsrb_effort_joint_transmission joint="hand_r_spring_proximal_joint" reduction="1"/>
+  <transmission name="hand_motor_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="hand_motor_joint">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="hand_motor_joint_actuator">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="hand_l_spring_proximal_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="hand_l_spring_proximal_joint">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="hand_l_spring_proximal_joint_actuator">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="hand_r_spring_proximal_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="hand_r_spring_proximal_joint">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="hand_r_spring_proximal_joint_actuator">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
   <joint name="hand_gripper_tool_frame_joint" type="fixed">
     <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.07"/>
     <parent link="hand_palm_link"/>
