@@ -29,9 +29,9 @@ POSSIBILITY OF SUCH DAMAGE.
 -->
 
 
-<robot name="hsrb">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="hsrb">
 
-    <include filename="$(find hsr_description)/robots/hsrb4s.urdf.xacro" />
+    <xacro:include filename="$(find hsr_description)/robots/hsrb4s.urdf.xacro" />
 
     <link name="odom"/>
 

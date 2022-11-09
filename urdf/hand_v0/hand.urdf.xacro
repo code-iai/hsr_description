@@ -59,7 +59,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- gripper base -->
     <xacro:macro name="hsrb_gripper_base" params="prefix parent *origin">
         <joint name="${prefix}_palm_joint" type="fixed">
-            <insert_block name="origin" />
+            <xacro:insert_block name="origin" />
             <parent link="${parent}" />
             <child link="${prefix}_palm_link" />
         </joint>
@@ -107,7 +107,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <xacro:macro name="hsrb_hand" params="prefix parent *origin">
         <xacro:hsrb_gripper_base prefix="${prefix}" parent="${parent}">
-            <insert_block name="origin" />
+            <xacro:insert_block name="origin" />
         </xacro:hsrb_gripper_base>
 
         <xacro:hsrb_finger_with_vacuum prefix="${prefix}" suffix="l" parent="${prefix}_palm_link">
@@ -127,13 +127,21 @@ POSSIBILITY OF SUCH DAMAGE.
 
         <xacro:hsrb_hand_gazebo prefix="${prefix}"/>
         <xacro:hsrb_hand_transmission prefix="${prefix}"/>
+
+        <joint name="${prefix}_gripper_tool_frame_joint" type="fixed">
+            <origin xyz="0.0 0.0 0.07" rpy="0.0 0.0 0.0" />
+            <parent link="${prefix}_palm_link" />
+            <child link="${prefix}_gripper_tool_frame" />
+        </joint>
+
+        <link name="${prefix}_gripper_tool_frame"/>
     </xacro:macro>
 
     <!-- gripper finger proximal base -->
     <xacro:macro name="hsrb_finger_proximal_base" params="prefix suffix parent *origin *axis">
         <joint name="${prefix}_${suffix}_proximal_joint" type="revolute">
-            <insert_block name="origin" />
-            <insert_block name="axis" />
+            <xacro:insert_block name="origin" />
+            <xacro:insert_block name="axis" />
             <limit effort="100.0" velocity="1.0"
                 lower="${proximal_joint_angle_range_min}"
                 upper="${proximal_joint_angle_range_max}" />
@@ -147,7 +155,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <xacro:hsrb_gripper_dummy_link name="${prefix}_${suffix}_proximal_link" />
 
         <joint name="${prefix}_${suffix}_spring_proximal_joint" type="revolute">
-            <insert_block name="axis" />
+            <xacro:insert_block name="axis" />
             <limit effort="100.0" velocity="1.0"
                 lower="${spring_proximal_joint_angle_range_min}"
                 upper="${spring_proximal_joint_angle_range_max}" />
@@ -160,8 +168,8 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- gripper finger distal base -->
     <xacro:macro name="hsrb_finger_distal_base" params="prefix suffix parent *origin *axis">
         <joint name="${prefix}_${suffix}_mimic_distal_joint" type="revolute">
-            <insert_block name="origin" />
-            <insert_block name="axis" />
+            <xacro:insert_block name="origin" />
+            <xacro:insert_block name="axis" />
             <limit effort="100.0" velocity="1.0"
                 lower="${-spring_proximal_joint_angle_range_max}"
                 upper="${-spring_proximal_joint_angle_range_min}" />
@@ -175,7 +183,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <xacro:hsrb_gripper_dummy_link name="${prefix}_${suffix}_mimic_distal_link" />
 
         <joint name="${prefix}_${suffix}_distal_joint" type="revolute">
-            <insert_block name="axis" />
+            <xacro:insert_block name="axis" />
             <limit effort="100.0" velocity="1.0"
                 lower="${-proximal_joint_angle_range_max}"
                 upper="${-proximal_joint_angle_range_min}" />
@@ -189,7 +197,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- finger with vacuum -->
     <xacro:macro name="hsrb_finger_with_vacuum" params="prefix suffix parent *origin">
         <xacro:hsrb_finger_proximal_base prefix="${prefix}" suffix="${suffix}" parent="${parent}">
-            <insert_block name="origin" />
+            <xacro:insert_block name="origin" />
             <axis xyz="1.0 0.0 0.0" />
         </xacro:hsrb_finger_proximal_base>
 
@@ -287,7 +295,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <!-- finger without vacuum -->
     <xacro:macro name="hsrb_finger_without_vacuum" params="prefix suffix parent *origin">
         <xacro:hsrb_finger_proximal_base prefix="${prefix}" suffix="${suffix}" parent="${parent}">
-            <insert_block name="origin" />
+            <xacro:insert_block name="origin" />
             <axis xyz="-1.0 0.0 0.0" />
         </xacro:hsrb_finger_proximal_base>
 
