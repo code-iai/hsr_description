@@ -41,7 +41,9 @@ POSSIBILITY OF SUCH DAMAGE.
         <joint name="${prefix}_pan_joint" type="revolute">
             <xacro:insert_block name="origin" />
             <axis xyz="0.0 0.0 1.0" />
-            <limit effort="100.0" velocity="1.0" lower="-3.84" upper="1.75" />
+            <!--limit effort="100.0" velocity="1.0" lower="-3.84" upper="1.75" /-->
+            <limit effort="100.0" velocity="1.0" lower="-3.83" upper="1.74" />
+            <safety_controller k_position="100" k_velocity="200000" soft_lower_limit="-3.83" soft_upper_limit="1.74"/>
             <parent link="${parent}" />
             <child link="${prefix}_pan_link" />
             <dynamics damping="1.0"/>
@@ -75,7 +77,9 @@ POSSIBILITY OF SUCH DAMAGE.
         <joint name="${prefix}_tilt_joint" type="revolute">
             <origin xyz="0.02 0.0 0.0" rpy="0.0 0.0 0.0" />
             <axis xyz="0.0 -1.0 0.0" />
-            <limit effort="100.0" velocity="1.0" lower="-1.57" upper="0.52" />
+            <!--limit effort="100.0" velocity="1.0" lower="-1.57" upper="0.52" /-->
+            <limit effort="100.0" velocity="1.0" lower="-1.56" upper="0.47" />
+            <safety_controller k_position="100" k_velocity="200000" soft_lower_limit="-1.56" soft_upper_limit="0.47"/>
             <parent link="${prefix}_pan_link" />
             <child link="${prefix}_tilt_link" />
             <dynamics damping="10.0"/>

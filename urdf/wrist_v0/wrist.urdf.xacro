@@ -38,7 +38,9 @@ POSSIBILITY OF SUCH DAMAGE.
         <joint name="${prefix}_flex_joint" type="revolute">
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
             <axis xyz="0.0 -1.0 0.0" />
-            <limit effort="100.0" velocity="1.5" lower="-1.92" upper="1.22" />
+            <!--limit effort="100.0" velocity="1.5" lower="-1.92" upper="1.22" /-->
+            <limit effort="100.0" velocity="1.5" lower="-1.91" upper="1.21" />
+            <safety_controller k_position="100" k_velocity="200000" soft_lower_limit="-1.91" soft_upper_limit="1.21"/>
             <parent link="${parent}" />
             <child link="${prefix}_flex_link" />
             <dynamics damping="1.0"/>
@@ -81,7 +83,9 @@ POSSIBILITY OF SUCH DAMAGE.
         <joint name="${prefix}_roll_joint" type="revolute">
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
             <axis xyz="0.0 0.0 1.0" />
-            <limit effort="100.0" velocity="1.5" lower="-1.92" upper="3.67" />
+            <!--limit effort="100.0" velocity="1.5" lower="-1.92" upper="3.67" /-->
+            <limit effort="100.0" velocity="1.5" lower="-1.91" upper="3.63" />
+            <safety_controller k_position="100" k_velocity="200000" soft_lower_limit="-1.91" soft_upper_limit="3.63"/>
             <parent link="${prefix}_flex_link" />
             <child link="${prefix}_roll_link" />
             <dynamics damping="1.0"/>
