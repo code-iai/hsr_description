@@ -198,6 +198,54 @@ POSSIBILITY OF SUCH DAMAGE.
             </collision>
         </link>
 
+        <joint name="${prefix}_f_bumper_joint" type="revolute">
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <parent link="${prefix}_link"/>
+            <child link="${prefix}_f_bumper_link"/>
+            <limit effort="0" lower="0" upper="0" velocity="0"/>
+        </joint>
+        <link name="${prefix}_f_bumper_link">
+            <inertial>
+                <origin xyz="0.0 0.0 0.0"/>
+                <mass value="0.06"/>
+                <inertia ixx="0.001437" ixy="0.0" ixz="0.0" iyy="0.001437" iyz="0.0" izz="0.002875"/>
+            </inertial>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsrb_description/meshes/base_v2/bumper.dae"/>
+                </geometry>
+            </visual>
+            <collision>
+                <geometry>
+                    <mesh filename="package://hsrb_description/meshes/base_v2/bumper.stl"/>
+                </geometry>
+            </collision>
+        </link>
+        <joint name="${prefix}_b_bumper_joint" type="revolute">
+            <origin rpy="0.0 0.0 3.141592653589793" xyz="0.0 0.0013 0.0"/>
+            <parent link="${prefix}_link"/>
+            <child link="${prefix}_b_bumper_link"/>
+            <limit effort="0" lower="0" upper="0" velocity="0"/>
+        </joint>
+        <link name="${prefix}_b_bumper_link">
+            <inertial>
+                <origin xyz="0.0 0.0 0.0"/>
+                <mass value="0.06"/>
+                <inertia ixx="0.001437" ixy="0.0" ixz="0.0" iyy="0.001437" iyz="0.0" izz="0.002875"/>
+            </inertial>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsrb_description/meshes/base_v2/bumper.dae"/>
+                </geometry>
+            </visual>
+            <collision>
+                <geometry>
+                    <mesh filename="package://hsrb_description/meshes/base_v2/bumper.stl"/>
+                </geometry>
+            </collision>
+        </link>
+
+
         <joint name="${prefix}_roll_joint" type="continuous">
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
             <axis xyz="0.0 0.0 1.0" />
