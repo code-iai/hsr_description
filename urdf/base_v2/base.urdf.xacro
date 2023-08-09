@@ -210,7 +210,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <mass value="0.06"/>
                 <inertia ixx="0.001437" ixy="0.0" ixz="0.0" iyy="0.001437" iyz="0.0" izz="0.002875"/>
             </inertial>
-            <visual>
+<!--             <visual>
                 <geometry>
                     <mesh filename="package://hsrb_description/meshes/base_v2/bumper.dae"/>
                 </geometry>
@@ -219,7 +219,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <geometry>
                     <mesh filename="package://hsrb_description/meshes/base_v2/bumper.stl"/>
                 </geometry>
-            </collision>
+            </collision> -->
         </link>
         <joint name="${prefix}_b_bumper_joint" type="revolute">
             <origin rpy="0.0 0.0 3.141592653589793" xyz="0.0 0.0013 0.0"/>
@@ -233,7 +233,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <mass value="0.06"/>
                 <inertia ixx="0.001437" ixy="0.0" ixz="0.0" iyy="0.001437" iyz="0.0" izz="0.002875"/>
             </inertial>
-            <visual>
+<!--             <visual>
                 <geometry>
                     <mesh filename="package://hsrb_description/meshes/base_v2/bumper.dae"/>
                 </geometry>
@@ -242,7 +242,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <geometry>
                     <mesh filename="package://hsrb_description/meshes/base_v2/bumper.stl"/>
                 </geometry>
-            </collision>
+            </collision> -->
         </link>
 
 
