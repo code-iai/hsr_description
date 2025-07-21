@@ -1,36 +1,7 @@
 <?xml version="1.0"?>
-<!--
-Copyright (c) 2017, Toyota Motor Corporation
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice,
-   this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
- * Neither the name of Toyota Motor Corporation nor the names of its
-   contributors may be used to endorse or promote products derived from
-   this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
--->
 <robot name="base" xmlns:xacro="http://ros.org/wiki/xacro">
-    <xacro:include filename="$(find hsr_description)/urdf/base_v2/base.transmission.xacro"/>
     <xacro:include filename="$(find hsr_description)/urdf/base_v2/base.gazebo.xacro"/>
-    <xacro:include filename="$(find hsr_description)/urdf/sensors/laser.urdf.xacro"/>
+    <xacro:include filename="$(find hsr_description)/urdf/sensors/hokuyo_laser.urdf.xacro"/>
     <xacro:include filename="$(find hsr_description)/urdf/sensors/imu.urdf.xacro"/>
 
     <!-- constant -->
@@ -44,6 +15,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xacro:property name="passive_wheel_offset_x" value="0.1495" />
     <xacro:property name="passive_wheel_offset_y" value="0.055" />
 
+    <!--<xacro:property name="drive_wheel_max_effort" value="28.0" />-->
     <xacro:property name="drive_wheel_max_effort" value="11.067" />
     <xacro:property name="drive_wheel_max_velocity" value="20.8" />
 
@@ -144,9 +116,40 @@ POSSIBILITY OF SUCH DAMAGE.
         </link>
     </xacro:macro>
 
+    <!-- bumper -->
+    <xacro:macro name="hsrb_bumper" params="prefix suffix parent *origin">
+        <joint name="${prefix}_${suffix}_bumper_joint" type="revolute">
+            <xacro:insert_block name="origin" />
+            <parent link="${parent}" />
+            <child link="${prefix}_${suffix}_bumper_link" />
+            <limit effort="0" velocity="0" lower="0" upper="0"/>
+        </joint>
+
+        <link name="${prefix}_${suffix}_bumper_link">
+            <inertial>
+                <origin xyz="0.0 0.0 0.0" />
+                <mass value="0.06"/>
+                <inertia
+                    ixx="0.001437"  ixy="0.0"  ixz="0.0"
+                    iyy="0.001437" iyz="0.0" izz="0.002875" />
+            </inertial>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_description/meshes/base_v2/bumper.dae" />
+                </geometry>
+            </visual>
+            <collision>
+                <geometry>
+                    <mesh filename="package://hsr_description/meshes/base_v2/bumper.stl" />
+                </geometry>
+            </collision>
+        </link>
+    </xacro:macro>
+
     <!-- base -->
-    <xacro:macro name="hsrb_base" params="prefix robot_namespace">
-        <link name="base_footprint"/>
+    <xacro:macro name="hsrb_base" params="prefix personal_name robot_namespace robot_name">
+        <link name="base_footprint">
+        </link>
 
         <joint name="${prefix}_footprint_joint" type="fixed">
             <parent link="base_footprint" />
@@ -155,96 +158,33 @@ POSSIBILITY OF SUCH DAMAGE.
 
         <link name="${prefix}_link">
             <inertial>
-                <mass value="50.00"/>  <!-- use dummy weight to stabilize gazebo move base (real value: 11.017971)-->
+                <mass value="50.0"/>
                 <origin xyz="-0.025978 -0.005498 0.17633"/>
                 <inertia ixx="0.3742" ixy="0.000434172172" ixz="0.03088"
-                    iyy="0.3436" iyz="0.01775" izz="0.1509"/>
+                         iyy="0.3436" iyz="0.01775" izz="0.1509"/>
             </inertial>
             <visual>
                 <geometry>
-                    <xacro:unless value="${g_use_obj_for_visual}">
-                        <mesh filename="package://hsr_meshes/meshes/base_v2/base_light.dae" />
-                    </xacro:unless>
-                    <xacro:if value="${g_use_obj_for_visual}">
-                        <mesh filename="package://hsr_meshes/meshes/base_v2/base_light.obj" />
-                    </xacro:if>
+                    <mesh filename="package://hsr_description/meshes/base_v2/base_light.dae"/>
                 </geometry>
             </visual>
             <visual>
                 <geometry>
-                    <xacro:unless value="${g_use_obj_for_visual}">
-                        <mesh filename="package://hsr_meshes/meshes/base_v2/body_light.dae" />
-                    </xacro:unless>
-                    <xacro:if value="${g_use_obj_for_visual}">
-                        <mesh filename="package://hsr_meshes/meshes/base_v2/body_light.obj" />
-                    </xacro:if>
+                    <mesh filename="package://hsr_description/meshes/base_v2/body_light.dae" />
                 </geometry>
             </visual>
             <visual>
                 <geometry>
-                    <xacro:unless value="${g_use_obj_for_visual}">
-                        <mesh filename="package://hsr_meshes/meshes/base_v2/torso_base.dae" />
-                    </xacro:unless>
-                    <xacro:if value="${g_use_obj_for_visual}">
-                        <mesh filename="package://hsr_meshes/meshes/base_v2/torso_base.obj" />
-                    </xacro:if>
+                    <mesh filename="package://hsr_description/meshes/base_v2/torso_base.dae" />
                 </geometry>
             </visual>
 
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/base_v2/base.stl" />
+                    <mesh filename="package://hsr_description/meshes/base_v2/base.stl" />
                 </geometry>
             </collision>
         </link>
-
-        <joint name="${prefix}_f_bumper_joint" type="revolute">
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
-            <parent link="${prefix}_link"/>
-            <child link="${prefix}_f_bumper_link"/>
-            <limit effort="0" lower="0" upper="0" velocity="0"/>
-        </joint>
-        <link name="${prefix}_f_bumper_link">
-            <inertial>
-                <origin xyz="0.0 0.0 0.0"/>
-                <mass value="0.06"/>
-                <inertia ixx="0.001437" ixy="0.0" ixz="0.0" iyy="0.001437" iyz="0.0" izz="0.002875"/>
-            </inertial>
-<!--             <visual>
-                <geometry>
-                    <mesh filename="package://hsrb_description/meshes/base_v2/bumper.dae"/>
-                </geometry>
-            </visual>
-            <collision>
-                <geometry>
-                    <mesh filename="package://hsrb_description/meshes/base_v2/bumper.stl"/>
-                </geometry>
-            </collision> -->
-        </link>
-        <joint name="${prefix}_b_bumper_joint" type="revolute">
-            <origin rpy="0.0 0.0 3.141592653589793" xyz="0.0 0.0013 0.0"/>
-            <parent link="${prefix}_link"/>
-            <child link="${prefix}_b_bumper_link"/>
-            <limit effort="0" lower="0" upper="0" velocity="0"/>
-        </joint>
-        <link name="${prefix}_b_bumper_link">
-            <inertial>
-                <origin xyz="0.0 0.0 0.0"/>
-                <mass value="0.06"/>
-                <inertia ixx="0.001437" ixy="0.0" ixz="0.0" iyy="0.001437" iyz="0.0" izz="0.002875"/>
-            </inertial>
-<!--             <visual>
-                <geometry>
-                    <mesh filename="package://hsrb_description/meshes/base_v2/bumper.dae"/>
-                </geometry>
-            </visual>
-            <collision>
-                <geometry>
-                    <mesh filename="package://hsrb_description/meshes/base_v2/bumper.stl"/>
-                </geometry>
-            </collision> -->
-        </link>
-
 
         <joint name="${prefix}_roll_joint" type="continuous">
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
@@ -293,18 +233,31 @@ POSSIBILITY OF SUCH DAMAGE.
                 rpy="0.0 0.0 0.0" />
         </xacro:hsrb_passive_wheel>
 
-        <xacro:laser
+        <xacro:hokuyo_laser
             prefix="${prefix}"
             robot_namespace="${robot_namespace}"
-            parent="${prefix}_link">
+            parent="${prefix}_link"
+            min_angle="-2.1" max_angle="2.1">
             <origin xyz="0.1675 0.0 0.1844" rpy="0.0 0.0 0.0" />
-        </xacro:laser>
+        </xacro:hokuyo_laser>
 
-        <xacro:imu_sensor prefix="${prefix}" robot_namespace="${robot_namespace}" parent="${prefix}_link">
-            <origin xyz="0.0005 0.1296 0.181" rpy="${pi} 0.0 0.0" />
+        <xacro:imu_sensor prefix="${prefix}" robot_namespace="${robot_namespace}" parent="${prefix}_link" topic_name="data">
+            <origin xyz="0.0005 0.1296 0.181" rpy="0.0 0.0 0.0" />
         </xacro:imu_sensor>
 
-        <xacro:hsrb_base_gazebo prefix="${prefix}"/>
-        <xacro:hsrb_base_transmission prefix="${prefix}"/>
+        <!-- bumper -->
+        <xacro:hsrb_bumper prefix="${prefix}" suffix="f" parent="${prefix}_link">
+            <origin
+                xyz="0.0 0.0 0.0"
+                rpy="0.0 0.0 0.0" />
+        </xacro:hsrb_bumper>
+
+        <xacro:hsrb_bumper prefix="${prefix}" suffix="b" parent="${prefix}_link">
+            <origin
+                xyz="0.0 0.0013 0.0"
+                rpy="0.0 0.0 ${pi}" />
+        </xacro:hsrb_bumper>
+
+        <xacro:hsrb_base_gazebo prefix="${prefix}" robot_namespace="${robot_namespace}"/>
     </xacro:macro>
 </robot>
