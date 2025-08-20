@@ -126,13 +126,13 @@
         </joint>
 
         <link name="${prefix}_${suffix}_bumper_link">
-            <inertial>
+<!--             <inertial>
                 <origin xyz="0.0 0.0 0.0" />
                 <mass value="0.06"/>
                 <inertia
                     ixx="0.001437"  ixy="0.0"  ixz="0.0"
                     iyy="0.001437" iyz="0.0" izz="0.002875" />
-            </inertial>
+            </inertial> -->
             <visual>
                 <geometry>
                     <mesh filename="package://hsr_description/meshes/base_v2/bumper.dae" />

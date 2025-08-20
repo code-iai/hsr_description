@@ -47,12 +47,12 @@
         </joint>
 
         <link name="${prefix}_flex_link">
-            <inertial>
+<!--             <inertial>
                 <mass value="1.339295"/>
                 <origin xyz="0.000632 0.006404 0.118529"/>
                 <inertia ixx="7.528" ixy="-0.000020284207" ixz="-0.000022947194"
                     iyy="0.007102" iyz="-0.000091796075" izz="0.001552"/>
-            </inertial>
+            </inertial> -->
             <visual>
                 <geometry>
                     <mesh filename="package://hsr_description/meshes/arm_v0/arm_flex_light.dae" />
