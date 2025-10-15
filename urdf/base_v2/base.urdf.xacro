@@ -118,11 +118,10 @@
 
     <!-- bumper -->
     <xacro:macro name="hsrb_bumper" params="prefix suffix parent *origin">
-        <joint name="${prefix}_${suffix}_bumper_joint" type="revolute">
+        <joint name="${prefix}_${suffix}_bumper_joint" type="fixed">
             <xacro:insert_block name="origin" />
             <parent link="${parent}" />
             <child link="${prefix}_${suffix}_bumper_link" />
-            <limit effort="0" velocity="0" lower="0" upper="0"/>
         </joint>
 
         <link name="${prefix}_${suffix}_bumper_link">
